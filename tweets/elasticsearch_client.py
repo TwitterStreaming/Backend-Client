@@ -18,7 +18,7 @@ def get_all_tweets():
 def search_tweets_by_text(query):
     body = {
         "query": {"match": {"text": query}},
-        "size": 10000
+        "size": 9999
     }
     response = es_client.search(index="streaming", body=body)
     return response["hits"]["total"]["value"], response["hits"]["hits"]
@@ -45,7 +45,6 @@ def get_tweets_trend(query, interval):
     }
 
     response = es_client.search(index="streaming", body=body)
-    print(response)
     return [
         {"date": bucket["key_as_string"], "count": bucket["doc_count"]}
         for bucket in response["aggregations"]["tweets_over_time"]["buckets"]
