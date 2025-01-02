@@ -7,6 +7,7 @@ from .elasticsearch_client import get_average_sentiment
 from .elasticsearch_client import get_tweet_count_by_hashtag
 from .elasticsearch_client import get_tweets_by_hashtag
 from .elasticsearch_client import get_most_used_hashtag
+from .elasticsearch_client import get_doc_count
 
 def get_all_tweets_view(request):
     total_count, tweets = get_all_tweets()
@@ -80,3 +81,7 @@ def most_used_hashtag_view(request):
         return JsonResponse(most_used_hashtag, safe=False)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
+
+def get_doc_count_view(request):
+    total_count = get_doc_count()
+    return JsonResponse({"total_count": total_count})

@@ -106,3 +106,10 @@ def get_most_used_hashtag():
     if buckets:
         return {"hashtag": buckets[0]["key"], "count": buckets[0]["doc_count"]}
     return {"hashtag": None, "count": 0}
+    
+def get_doc_count():
+    body = {
+        "query": {"match_all": {}}
+    }
+    response = es_client.count(index="streaming", body=body)
+    return response["count"]
