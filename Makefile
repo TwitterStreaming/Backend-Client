@@ -11,7 +11,7 @@ init: ## Initialize venv
 
 .PHONY: install
 install: ## Initialize and install all dependencies
-	@pip install django django-cors-headers elasticsearch
+	@pip install django django-cors-headers elasticsearch python-dotenv
 
 .PHONY: install
 run: ## Run the project
