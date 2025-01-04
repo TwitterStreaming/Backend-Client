@@ -8,6 +8,7 @@ from .elasticsearch_client import get_tweet_count_by_hashtag
 from .elasticsearch_client import get_tweets_by_hashtag
 from .elasticsearch_client import get_most_used_hashtag
 from .elasticsearch_client import get_doc_count
+from .elasticsearch_client import get_tweets_by_hashtag_query
 
 def get_all_tweets_view(request):
     total_count, tweets = get_all_tweets()
@@ -85,3 +86,12 @@ def most_used_hashtag_view(request):
 def get_doc_count_view(request):
     total_count = get_doc_count()
     return JsonResponse({"total_count": total_count})
+
+def get_tweets_by_hashtag(request):
+    hashtag = request.GET.get("q", None)  
+    if not hashtag:
+        return JsonResponse({"error": "Hashtag query parameter is required."}, status=400)
+    
+    tweets = get_tweets_by_hashtag_query(hashtag)
+    return JsonResponse({"tweets": tweets})
+

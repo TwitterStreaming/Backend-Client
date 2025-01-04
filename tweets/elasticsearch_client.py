@@ -113,3 +113,30 @@ def get_doc_count():
     }
     response = es_client.count(index="streaming", body=body)
     return response["count"]
+
+
+def get_tweets_by_hashtag_query(hashtag_query):
+    if not hashtag_query.startswith("#"):
+        hashtag_query = "#" + hashtag_query
+    
+    body = {
+        "query": {
+            "match": {
+                "hashtags": {
+                    "query": hashtag_query,
+               
+                }
+            }
+        }
+    }
+    response = es_client.search(index="streaming", body=body)
+    
+    for hit in response["hits"]["hits"]:
+        tweet = hit["_source"]
+
+        matching_hashtag = next((hashtag for hashtag in tweet.get("hashtags", []) if hashtag.lower().startswith(hashtag_query.lower())), None)
+        if matching_hashtag:
+            return matching_hashtag  
+
+    return None  
+
